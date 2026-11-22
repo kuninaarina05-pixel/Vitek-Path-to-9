@@ -55,6 +55,31 @@ jobs:
           godot --headless --path . --export-debug "Android" build/Vitek-Path-to-9.apk
           test -s build/Vitek-Path-to-9.apk
 
+      - name: Test APK on Android emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          target: google_apis
+          arch: x86_64
+          profile: pixel_2
+          disable-animations: true
+          script: |
+            mkdir -p build/emulator
+            adb install -r build/Vitek-Path-to-9.apk || true
+            adb shell monkey -p com.kuninaarina.vitekpathtonine 1 || true
+            sleep 20
+            adb logcat -d -v time > build/emulator/logcat.txt
+            adb exec-out screencap -p > build/emulator/screenshot.png
+            adb shell dumpsys activity activities > build/emulator/activities.txt
+
+      - name: Upload emulator diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Vitek-Android-Emulator-Diagnostics
+          path: build/emulator/
+          if-no-files-found: ignore
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
