@@ -1,0 +1,1 @@
+Android export uses Godot 4.3 export templates and Android SDK/JDK. The GitHub Actions workflow installs the Godot CI environment, imports the project and exports a debug APK using the Android preset. Package id: com.kuninaarina.vitekpathtonine. The APK is uploaded as a workflow artifact; a successful run is required before claiming a build exists.
