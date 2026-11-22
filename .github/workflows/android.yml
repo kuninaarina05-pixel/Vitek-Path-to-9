@@ -16,6 +16,7 @@ jobs:
         with:
           version: 4.3.0
           use-dotnet: false
+          include-templates: true
       - name: Import project
         run: godot --headless --editor --path . --import
       - name: Export Android APK
